@@ -1,5 +1,6 @@
 import { Gtk } from "ags/gtk4";
-import { createComputed, createState, For } from "gnim";
+import { createComputed, For } from "gnim";
+import { createPoll } from "ags/time";
 import AstalIO from "gi://AstalIO?version=0.1";
 import Gio from "gi://Gio?version=2.0";
 import GLib from "gi://GLib?version=2.0";
@@ -98,15 +99,32 @@ function readSessions(): PiSession[] {
   return sessions;
 }
 
-const [sessions, setSessions] = createState<PiSession[]>([]);
-const refresh = () => setSessions(readSessions());
-refresh();
+function sessionsEqual(a: PiSession[], b: PiSession[]): boolean {
+  return (
+    a.length === b.length &&
+    a.every((s, i) => {
+      const t = b[i];
+      return (
+        s.pid === t.pid &&
+        s.status === t.status &&
+        s.sessionName === t.sessionName &&
+        s.cwd === t.cwd &&
+        s.model === t.model &&
+        s.contextPercent === t.contextPercent
+      );
+    })
+  );
+}
 
-// pi rewrites its file on every state change, so a directory monitor gives
-// instant updates with no idle wakeups (no polling, no subprocess).
-Gio.File.new_for_path(SESSIONS_DIR)
-  .monitor_directory(Gio.FileMonitorFlags.NONE, null)
-  ?.connect("changed", refresh);
+// Poll like the Clock widget does. A Gio.FileMonitor would be event-driven, but
+// AGS does not deliver its events here (a dead session file written while the
+// bar runs is never picked up), so it cannot be relied on. Returning the
+// previous array when nothing changed keeps an idle bar from re-rendering.
+const POLL_MS = 1000;
+const sessions = createPoll<PiSession[]>([], POLL_MS, (prev) => {
+  const next = readSessions();
+  return sessionsEqual(prev, next) ? prev : next;
+});
 
 function PiRow({ pid }: { pid: number }) {
   // `For` reuses a row by key without refreshing its item, so read the live
@@ -175,11 +193,7 @@ export default function PiStatus() {
   return (
     <menubutton class={buttonClass} valign={Gtk.Align.CENTER} alwaysShowArrow={false}>
       <label class="pi-glyph" label={PI_GLYPH} />
-      <popover
-        onNotifyVisible={(self: Gtk.Popover) => {
-          if (self.visible) refresh();
-        }}
-      >
+      <popover>
         <box
           class="panel"
           orientation={Gtk.Orientation.VERTICAL}
