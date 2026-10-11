@@ -1,0 +1,241 @@
+/* Alucard Shell — swaync theme (Dracula Classic).
+ *
+ * Palette mirrors theme/_palette.scss (semantic tokens) and dracula-spec.mdx;
+ * keep them in sync. Metrics mirror theme/_metrics.scss: panels use the 12px
+ * island radius, inner items 8px, and the 8px screen gap is reused for margins.
+ */
+
+@define-color bg        #343746; /* $surface         floating islands & panels */
+@define-color raised    #424450; /* $surface-raised  $bg-lighter */
+@define-color hover     #44475A; /* $surface-hover   Selection */
+@define-color inset     #21222C; /* $surface-inset   recessed troughs */
+@define-color text      #F8F8F2; /* $text */
+@define-color text-dim  rgba(248, 248, 242, 0.65); /* $text-dim */
+@define-color divider   #6272A4; /* $divider         Current Line */
+@define-color accent    #BD93F9; /* $accent          Purple */
+@define-color on-accent #282A36; /* $on-accent       Background */
+@define-color error     #FF5555; /* $err */
+
+* {
+  all: unset;
+  font-family: "Sarasa Term SC";
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.floating-notifications.background .notification-row {
+  padding: 8px;
+}
+
+.floating-notifications.background .notification-row .notification-background {
+  border-radius: 12px;
+  background-color: @bg;
+  color: @text;
+  border: 1px solid @divider;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification {
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification.critical {
+  border: 1px solid @error;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification .notification-content .summary {
+  margin: 8px;
+  color: @text;
+  font-weight: bold;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification .notification-content .body {
+  margin: 8px;
+  color: @text-dim;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification > *:last-child > * {
+  min-height: 48px;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action {
+  border-radius: 8px;
+  color: @text;
+  background-color: @raised;
+  border: 1px solid @divider;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action:hover {
+  background-color: @hover;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action:active {
+  background-color: @divider;
+}
+
+.floating-notifications.background .notification-row .notification-background .close-button {
+  margin: 8px;
+  padding: 4px;
+  border-radius: 8px;
+  color: @text-dim;
+  background-color: transparent;
+}
+
+.floating-notifications.background .notification-row .notification-background .close-button:hover,
+.floating-notifications.background .notification-row .notification-background .close-button:active {
+  background-color: @error;
+  color: @on-accent;
+}
+
+.control-center {
+  border-radius: 12px;
+  margin: 8px;
+  background-color: @bg;
+  color: @text;
+  padding: 12px;
+  border: 1px solid @divider;
+}
+
+.control-center .widget-title {
+  color: @text;
+  font-weight: bold;
+}
+
+.control-center .widget-title button {
+  border-radius: 8px;
+  color: @text;
+  background-color: @raised;
+  border: 1px solid @divider;
+  padding: 6px 10px;
+}
+
+.control-center .widget-title button:hover {
+  background-color: @hover;
+}
+
+.control-center .widget-title button:active {
+  background-color: @divider;
+}
+
+.control-center .notification-row .notification-background {
+  border-radius: 12px;
+  margin: 8px 0;
+  background-color: @raised;
+  color: @text;
+  border: 1px solid @divider;
+}
+
+.control-center .notification-row .notification-background .notification {
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.control-center .notification-row .notification-background .notification.critical {
+  border: 1px solid @error;
+}
+
+.control-center .notification-row .notification-background .notification .notification-content {
+  color: @text;
+}
+
+.control-center .notification-row .notification-background .notification .notification-content .summary {
+  margin: 8px;
+  color: @text;
+  font-weight: bold;
+}
+
+.control-center .notification-row .notification-background .notification .notification-content .body {
+  margin: 8px;
+  color: @text-dim;
+}
+
+.control-center .notification-row .notification-background .notification > *:last-child > * {
+  min-height: 48px;
+}
+
+.control-center .notification-row .notification-background .notification > *:last-child > * .notification-action {
+  border-radius: 8px;
+  color: @text;
+  background-color: @raised;
+  border: 1px solid @divider;
+}
+
+.control-center .notification-row .notification-background .notification > *:last-child > * .notification-action:hover {
+  background-color: @hover;
+}
+
+.control-center .notification-row .notification-background .notification > *:last-child > * .notification-action:active {
+  background-color: @divider;
+}
+
+.control-center .notification-row .notification-background .close-button {
+  margin: 8px;
+  padding: 4px;
+  border-radius: 8px;
+  color: @text-dim;
+  background-color: transparent;
+}
+
+.control-center .notification-row .notification-background .close-button:hover,
+.control-center .notification-row .notification-background .close-button:active {
+  background-color: @error;
+  color: @on-accent;
+}
+
+progressbar,
+progress,
+trough {
+  border-radius: 8px;
+}
+
+.notification.critical progress {
+  background-color: @error;
+}
+
+.notification.low progress,
+.notification.normal progress {
+  background-color: @accent;
+}
+
+trough {
+  background-color: @inset;
+}
+
+.control-center trough {
+  background-color: @inset;
+}
+
+.control-center-dnd {
+  margin: 8px 0;
+  border-radius: 8px;
+}
+
+.control-center-dnd slider {
+  background: @hover;
+  border-radius: 8px;
+}
+
+.widget-dnd {
+  color: @text-dim;
+}
+
+.widget-dnd > switch {
+  border-radius: 12px;
+  background: @inset;
+  border: 1px solid @divider;
+}
+
+.widget-dnd > switch slider {
+  background: @text;
+  border-radius: 12px;
+  margin: 2px;
+}
+
+.widget-dnd > switch:checked {
+  background: @accent;
+  border-color: @accent;
+}
+
+.widget-dnd > switch:checked slider {
+  background: @text;
+}
