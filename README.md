@@ -19,6 +19,11 @@ systemctl --user restart ags  # 正常重载；AGS 无热重载，改完代码�
 
 AGS 3.x、libastal、gtk4-layer-shell、gnim、字体 **Sarasa Term SC**。
 
+## Dotfiles
+
+rofi、swaync 等非 AGS 配置由仓库 `dotfiles/` 统一托管（`~/.config` 下为指向它的软链）。
+新增或修改这类配置前，先读 [`dotfiles/README.md`](dotfiles/README.md)：登记表、安装/恢复命令与备份策略都在里面。
+
 ## 注意
 
 - AGS 是唯一的 `org.kde.StatusNotifierWatcher`；替换 bar 后，已注册到旧 watcher 的
