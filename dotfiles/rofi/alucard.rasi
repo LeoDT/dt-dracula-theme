@@ -1,0 +1,190 @@
+/**
+ * Alucard Shell — rofi theme (Dracula Classic).
+ *
+ * Palette mirrors theme/_palette.scss (semantic tokens) and dracula-spec.mdx.
+ * Keep the three in sync if the palette ever changes.
+ *
+ * rofi 2.0 has no box-shadow support, so depth comes from the border and the
+ * surface contrast only — the bar islands work the same way.
+ *
+ *   surface       #343746   $surface        floating interactive elements
+ *   hover         #44475A   $surface-hover  Selection
+ *   text          #F8F8F2   $text
+ *   text-dim      #F8F8F2A6 $text-dim       rgba(foreground, 65%)
+ *   divider       #6272A4   $divider        Current Line / Comment
+ *   accent        #BD93F9   $accent         Purple (not Functional Purple)
+ *   on-accent     #282A36   $on-accent      Background
+ *   red           #FF5555   $err
+ */
+
+* {
+  surface:       #343746;
+  hover:         #44475A;
+  text:          #F8F8F2;
+  text-dim:      #F8F8F2A6;
+  divider:       #6272A4;
+  accent:        #BD93F9;
+  on-accent:     #282A36;
+  red:           #FF5555;
+
+  font:             "Sarasa Term SC 18";
+  background-color: transparent;
+  text-color:       @text;
+  border-color:     @divider;
+
+  /* Element state roles consumed by rofi. Selection is the accent pill, the
+   * same language as an active workspace on the bar. */
+  normal-background:             transparent;
+  normal-foreground:             @text;
+  selected-normal-background:    @accent;
+  selected-normal-foreground:    @on-accent;
+  active-background:             @accent;
+  active-foreground:             @on-accent;
+  selected-active-background:    @accent;
+  selected-active-foreground:    @on-accent;
+  urgent-background:             @red;
+  urgent-foreground:             @text;
+  alternate-normal-background:   transparent;
+  alternate-normal-foreground:   @text;
+  alternate-active-background:   transparent;
+  alternate-active-foreground:   @text;
+  alternate-urgent-background:   transparent;
+  alternate-urgent-foreground:   @text;
+}
+
+window {
+  location:         center;
+  width:            640px;
+  padding:          12px;
+  background-color: @surface;
+  border:           1px solid;
+  border-color:     @divider;
+  border-radius:    12px;
+}
+
+mainbox {
+  padding: 0;
+  border:  0;
+}
+
+message {
+  padding:          8px 0 0 0;
+  border:           0;
+  background-color: transparent;
+  text-color:       @text-dim;
+}
+
+/* ---- input ---- */
+inputbar {
+  children:         [ textbox-prompt-colon, entry, case-indicator ];
+  spacing:          10px;
+  padding:          0;
+  background-color: transparent;
+  text-color:       @text;
+}
+
+/* A static search glyph carries the affordance; the dynamic mode prompt
+ * ("combi") is dropped from the inputbar children entirely. */
+textbox-prompt-colon {
+  str:            ""; /* nf-fa-search */
+  text-color:     @accent;
+  margin:         0;
+  expand:         false;
+  vertical-align: 0.5;
+}
+
+entry {
+  placeholder:       "搜索应用 / 命令…";
+  placeholder-color: @text-dim;
+  text-color:        @text;
+  cursor:            text;
+  cursor-color:      @accent;
+  cursor-width:      2;
+  padding:           0;
+  background-color:  transparent;
+}
+
+case-indicator {
+  spacing:    0;
+  text-color: @text-dim;
+}
+
+/* ---- list ---- */
+listview {
+  columns:          1;
+  lines:            10;
+  spacing:          4px;
+  padding:          12px 0 0 0;
+  border:           0;
+  scrollbar:        true;
+  fixed-height:     true;
+  background-color: transparent;
+}
+
+scrollbar {
+  width:                  4px;
+  handle-width:           4px;
+  handle-color:           @divider;
+  handle-rounded-corners: true;
+  border:                 0;
+  padding:                0;
+  background-color:       transparent;
+}
+
+element {
+  padding:          0;
+  spacing:          8px;
+  border:           0;
+  border-radius:    8px;
+  background-color: transparent;
+}
+
+/* Theming `element` drops rofi's built-in state rules, so restate them here
+ * (same reason the pywal template spells them out). */
+element normal.normal,
+element alternate.normal {
+  background-color: var(normal-background);
+  text-color:       var(normal-foreground);
+}
+
+element selected.normal,
+element normal.active,
+element selected.active,
+element alternate.active {
+  background-color: var(selected-normal-background);
+  text-color:       var(selected-normal-foreground);
+}
+
+element normal.urgent,
+element selected.urgent,
+element alternate.urgent {
+  background-color: var(urgent-background);
+  text-color:       var(urgent-foreground);
+}
+
+element-text {
+  padding:          7px 10px;
+  background-color: transparent;
+  text-color:       inherit;
+  vertical-align:   0.5;
+}
+
+/* ---- mode switcher (combi) ---- */
+mode-switcher {
+  spacing:          4px;
+  padding:          10px 0 0 0;
+  background-color: transparent;
+}
+
+button {
+  padding:          4px 10px;
+  border:           0;
+  border-radius:    8px;
+  background-color: transparent;
+  text-color:       @text-dim;
+}
+
+button selected {
+  background-color: @hover;
+  text-color:       @text;
+}

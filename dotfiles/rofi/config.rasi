@@ -1,0 +1,21 @@
+/*
+ * rofi — Alucard Shell
+ *
+ * Visual styling lives in alucard.rasi. This file only carries behaviour.
+ */
+
+configuration {
+  show-icons: false;
+
+  timeout {
+    action: "kb-cancel";
+    delay:  0;
+  }
+
+  filebrowser {
+    directories-first: true;
+    sorting-method:    "name";
+  }
+}
+
+@theme "~/.config/rofi/alucard.rasi"
