@@ -1,0 +1,60 @@
+# Alacritty theme: Alucard Classic (Dracula light).
+# Colors taken verbatim from dracula-spec.mdx (Alucard palette + Alucard ANSI palette).
+
+[colors.primary]
+background = "#FFFBEB"
+foreground = "#1F1F1F"
+
+[colors.cursor]
+text = "#FFFBEB"
+cursor = "#644AC9"
+
+[colors.vi_mode_cursor]
+text = "CellBackground"
+cursor = "CellForeground"
+
+[colors.selection]
+text = "CellForeground"
+background = "#CFCFDE"
+
+[colors.normal]
+black   = "#FFFBEB"
+red     = "#CB3A2A"
+green   = "#14710A"
+yellow  = "#846E15"
+blue    = "#644AC9"
+magenta = "#A3144D"
+cyan    = "#036A96"
+white   = "#1F1F1F"
+
+[colors.bright]
+black   = "#6C664B"
+red     = "#D74C3D"
+green   = "#198D0C"
+yellow  = "#9E841A"
+blue    = "#7862D0"
+magenta = "#BF185A"
+cyan    = "#047FB4"
+white   = "#2C2B31"
+
+# Search highlights and hints are not spec tokens; use the closest Alucard
+# syntax colors (Green/Orange/Purple) rather than inventing new values.
+[colors.search.matches]
+foreground = "#FFFBEB"
+background = "#14710A"
+
+[colors.search.focused_match]
+foreground = "#FFFBEB"
+background = "#A34D14"
+
+[colors.footer_bar]
+background = "#FFFBEB"
+foreground = "#1F1F1F"
+
+[colors.hints.start]
+foreground = "#FFFBEB"
+background = "#644AC9"
+
+[colors.hints.end]
+foreground = "#644AC9"
+background = "#FFFBEB"

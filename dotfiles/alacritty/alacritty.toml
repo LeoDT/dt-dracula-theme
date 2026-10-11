@@ -1,0 +1,11 @@
+[general]
+import = ["./alucard.toml"]
+
+[terminal]
+shell = "fish"
+
+[font]
+size = 16
+
+[font.normal]
+family = "Sarasa Term SC"

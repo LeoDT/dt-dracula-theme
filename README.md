@@ -3,6 +3,13 @@
 Hyprland 顶栏：AGS v3 + Astal + Gnim (TSX)，Dracula Classic。单显示器（3440×1440），
 保留 rofi 与 swaync；WiFi / 蓝牙 / 电池不做。
 
+## 配色原则
+
+- **UI 用 Dracula Classic（暗色）**：AGS 顶栏、rofi、swaync、hyprlock 等界面元素。
+- **长时间阅读的内容用 Alucard Classic（亮色）**：alacritty、fish、Emacs 等代码 / 终端 / 阅读场景。
+
+两套配色均取自 [`dracula-spec.mdx`](dracula-spec.mdx)；改色时各按自己的变体来，不要混用。
+
 ## 运行
 
 本目录即 AGS 配置目录，`~/.config/ags` 是指向它的软链接。
