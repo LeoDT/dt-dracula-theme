@@ -71,6 +71,55 @@ window.island > box.island-content {
   background: $surface-hover;
 }
 
+/* ---- right island: pi session status ---- */
+/* Busy uses Dracula green (semantic $ok); idle stays dim so it never competes
+   with real status items in the bar. */
+menubutton.pi.busy > button {
+  color: $ok;
+}
+
+menubutton.pi.idle > button {
+  color: $text-dim;
+}
+
+/* Much larger than the bar font: pi is an x-height letter, so it needs ~28px to
+   reach the optical height of the neighbouring nerd-font icons. */
+.pi-glyph {
+  font-size: 28px;
+  font-weight: $font-weight-bold;
+}
+
+.pi-row {
+  padding: 3px 2px;
+}
+
+.pi-name {
+  color: $text;
+}
+
+.pi-status {
+  font-size: 14px;
+}
+
+.pi-status.busy {
+  color: $ok;
+}
+
+.pi-status.idle {
+  color: $text-dim;
+}
+
+.pi-cwd,
+.pi-empty {
+  color: $text-dim;
+  font-size: 14px;
+}
+
+.pi-meta {
+  color: $text-dim;
+  font-size: 13px;
+}
+
 .divider {
   min-width: 1px;
   min-height: 16px;

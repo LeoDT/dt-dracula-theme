@@ -2,6 +2,7 @@ import { Astal, Gdk, Gtk } from "ags/gtk4";
 import Island from "./Island";
 import Clock from "../widgets/Clock";
 import Systray from "../widgets/Systray";
+import PiStatus from "../widgets/PiStatus";
 import Volume from "../widgets/Volume";
 import { BAR_GAP_Y, ISLAND_SPACING, SCREEN_GAP_X } from "../theme/layout";
 
@@ -21,6 +22,7 @@ export default function RightIsland({ monitor, index }: Props) {
     >
       <Systray />
       <box class="divider" valign={Gtk.Align.CENTER} />
+      <PiStatus />
       <Volume />
       <Clock />
     </Island>
