@@ -1,0 +1,26 @@
+// Role-based tokens. Components reference these, never the raw palette.
+@use "palette" as *;
+
+// Surfaces
+$surface: $bg-light; // islands and popups
+$surface-raised: $bg-lighter; // small raised items (tray icon placeholders)
+$surface-inset: $bg-dark; // recessed areas
+$surface-hover: $selection; // hover / pressed
+
+// Text
+$text: $fg; // primary
+$text-dim: rgba($fg, 0.65); // secondary, ~5.7:1 on $surface
+$text-muted: $comment; // NON-TEXT only (dividers, disabled icons), 3:1
+$divider: $comment;
+
+// Accent
+// #BD93F9 rather than Functional Purple #815CD6: the latter is 3.0:1 on $surface
+// and 2.5:1 on a popup, violating the spec's own 4.5:1 rule.
+$accent: $purple; // 4.9:1 on $surface
+$on-accent: $bg; // 5.9:1 on $accent
+
+// State
+$ok: $green;
+$warn: $orange;
+$err: $red;
+$info: $cyan;

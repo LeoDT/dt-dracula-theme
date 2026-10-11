@@ -1,0 +1,31 @@
+// Raw Dracula Classic tokens, transcribed verbatim from dracula-spec.mdx.
+// Only the palettes a desktop shell needs are kept here (syntax, UI, functional).
+// The ANSI palette and the Alucard (light) palette are intentionally omitted —
+// add them if/when a light variant or terminal-like widget is needed.
+
+// Syntax
+$bg: #282a36;
+$current-line: #6272a4;
+$selection: #44475a;
+$fg: #f8f8f2;
+$comment: #6272a4;
+$red: #ff5555;
+$orange: #ffb86c;
+$yellow: #f1fa8c;
+$green: #50fa7b;
+$cyan: #8be9fd;
+$purple: #bd93f9;
+$pink: #ff79c6;
+
+// UI surfaces
+$bg-lighter: #424450;
+$bg-light: #343746; // = "floating interactive elements"
+$bg-dark: #21222c;
+$bg-darker: #191a21;
+
+// Functional (UI states only; spec says never use in editor/terminal contexts)
+$fn-red: #de5735;
+$fn-orange: #a39514;
+$fn-green: #089108;
+$fn-cyan: #0081d6;
+$fn-purple: #815cd6;

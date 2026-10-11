@@ -1,0 +1,202 @@
+@use "theme/semantic" as *;
+@use "theme/typography" as *;
+@use "theme/metrics" as *;
+
+button {
+  background: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  padding: 0;
+  color: $text-muted;
+  font-family: inherit;
+  font-size: inherit;
+  transition: 120ms;
+}
+
+window.island {
+  background: transparent;
+  color: $text;
+  font-family: $font-family;
+  font-size: $font-size;
+  font-weight: $font-weight;
+}
+
+window.island > box.island-content {
+  background: $surface;
+  border-radius: $island-radius;
+  padding: 0 $island-padding-x;
+}
+
+/* ---- left island: workspaces ---- */
+.workspace {
+  min-width: $workspace-size;
+  min-height: $workspace-size;
+  border-radius: $item-radius;
+}
+
+.workspace:hover {
+  background: $surface-hover;
+  color: $text;
+}
+
+.workspace.occupied {
+  color: $text-dim;
+}
+
+.workspace.active,
+.workspace.active:hover {
+  background: $accent;
+  color: $on-accent;
+}
+
+/* ---- center island: focused window title ---- */
+.title {
+  color: $text;
+  padding: 0 10px;
+  font-weight: $font-weight-bold;
+}
+
+/* ---- right island: tray + status ---- */
+.tray-item {
+  min-width: $status-height;
+  min-height: $status-height;
+  padding: 0 2px;
+  border-radius: $item-radius;
+  color: $text;
+}
+
+.tray-item:hover {
+  background: $surface-hover;
+}
+
+.divider {
+  min-width: 1px;
+  min-height: 16px;
+  margin: 0 2px;
+  background: $divider;
+  opacity: 0.6;
+}
+
+.status-button {
+  color: $text;
+}
+
+menubutton.status-button > button {
+  min-height: $status-height;
+  padding: 0 10px;
+  border-radius: $item-radius;
+  color: $text;
+}
+
+menubutton.status-button > button:hover {
+  background: $surface-hover;
+}
+
+/* ---- popups (volume panel + calendar) ---- */
+popover > contents {
+  background: $surface;
+  color: $text;
+  border: 1px solid $divider;
+  border-radius: $island-radius;
+  padding: 8px;
+}
+
+.panel-title {
+  color: $text-dim;
+  font-size: 15px;
+}
+
+.panel-icon {
+  min-width: $status-height;
+  min-height: $status-height;
+  border-radius: $item-radius;
+  color: $text;
+}
+
+.panel-icon:hover {
+  background: $surface-hover;
+}
+
+/* Astal.Slider extends Gtk.Scale; Adwaita's trough/handle do not match Dracula. */
+scale {
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+scale > trough {
+  min-height: 6px;
+  border: none;
+  border-radius: 3px;
+  background: $surface-inset;
+}
+
+scale > trough > highlight {
+  border: none;
+  border-radius: 3px;
+  background: $accent;
+}
+
+scale > trough > slider {
+  min-width: 16px;
+  min-height: 16px;
+  margin: -5px;
+  border: none;
+  border-radius: 50%;
+  background: $text;
+  box-shadow: none;
+}
+
+scale > trough > slider:hover {
+  background: $accent;
+}
+
+/* ---- calendar ---- */
+.calendar-header {
+  padding-bottom: 2px;
+}
+
+.calendar-nav {
+  min-width: 26px;
+  min-height: 26px;
+  border-radius: $item-radius;
+  color: $text-dim;
+}
+
+.calendar-nav:hover {
+  background: $surface-hover;
+  color: $text;
+}
+
+.calendar-title {
+  color: $text;
+  font-weight: $font-weight-bold;
+}
+
+.calendar-weekday {
+  color: $text-dim;
+  font-size: 14px;
+}
+
+.calendar-day {
+  min-height: 28px;
+  border-radius: $item-radius;
+  color: $text;
+}
+
+.calendar-day.other {
+  color: $text-dim;
+  opacity: 0.45;
+}
+
+.calendar-day.weekend {
+  color: $text-dim;
+}
+
+.calendar-day.today {
+  background: $accent;
+  color: $on-accent;
+  font-weight: $font-weight-bold;
+}

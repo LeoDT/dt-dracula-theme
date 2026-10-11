@@ -1,0 +1,4 @@
+node_modules/
+@girs/
+.pi/tmp/
+.pi/tasks/
