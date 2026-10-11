@@ -13,6 +13,7 @@
 @define-color text-dim  rgba(248, 248, 242, 0.65); /* $text-dim */
 @define-color divider   #6272A4; /* $divider         Current Line */
 @define-color accent    #BD93F9; /* $accent          Purple */
+@define-color accent-br #D6ACFF; /* AnsiBrightBlue  accent hover */
 @define-color on-accent #282A36; /* $on-accent       Background */
 @define-color error     #FF5555; /* $err */
 
@@ -238,4 +239,54 @@ trough {
 
 .widget-dnd > switch:checked slider {
   background: @text;
+}
+
+/* ---- inline reply ---- */
+.inline-reply {
+  padding: 8px;
+}
+
+.inline-reply-entry {
+  background-color: @inset;
+  color: @text;
+  border: 1px solid @divider;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.inline-reply-entry:focus {
+  border-color: @accent;
+}
+
+.inline-reply-button {
+  margin-left: 8px;
+  border-radius: 8px;
+  background-color: @accent;
+  color: @on-accent;
+  padding: 6px 12px;
+}
+
+.inline-reply-button:hover {
+  background-color: @accent-br;
+}
+
+/* ---- inhibitors widget ---- */
+.control-center .widget-inhibitors {
+  color: @text-dim;
+}
+
+.control-center .widget-inhibitors button {
+  border-radius: 8px;
+  color: @text;
+  background-color: @raised;
+  border: 1px solid @divider;
+  padding: 6px 10px;
+}
+
+.control-center .widget-inhibitors button:hover {
+  background-color: @hover;
+}
+
+.notification-content .time {
+  color: @text-dim;
 }
