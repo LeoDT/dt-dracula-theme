@@ -1,7 +1,7 @@
 # Dotfiles
 
-本仓库托管的非 AGS 配置（rofi、swaync、alacritty、fish…）。这里的文件是**唯一真源**：
-`~/.config` 下对应路径是指向本目录的软链接（与 `~/.config/ags` 同一模式），在任一侧
+本仓库托管的非 AGS 配置（rofi、swaync、alacritty、fish、fcitx5…）。这里的文件是**唯一真源**：
+`~/.config`（及 `~/.local/share`）下对应路径是指向本目录的软链接（与 `~/.config/ags` 同一模式），在任一侧
 编辑都等于改仓库，天然由 git 记录。
 
 ## 配色
@@ -10,6 +10,7 @@
 
 - **Dracula Classic（暗色）——界面**：AGS 顶栏、rofi、swaync、hyprlock。
 - **Alucard Classic（亮色）——长读内容**：alacritty、fish，以及外部仓库 `~/github/emacs.d` 的 Emacs 主题（`lisp/alucard-theme.el`）。
+- **fcitx5 输入面板**：同时提供两套（`dracula-classic` / `alucard-classic`），按需在 `fcitx5-configtool` 里切换。
 
 窗口边框 / glow 用 Alucard 的 accent（`#644AC9`）与亮色窗口呼应，定义在 `~/.config/hypr/hyprland.lua`（不在本仓库托管范围）。
 
@@ -23,6 +24,10 @@ dotfiles/
 ├── alacritty/
 │   ├── alacritty.toml          # 行为配置（import 主题、shell、字体）
 │   └── alucard.toml            # Alucard 亮色主题
+├── fcitx5/
+│   └── themes/
+│       ├── dracula-classic/    # Dracula 暗色输入面板（theme.conf + 图标 SVG）
+│       └── alucard-classic/    # Alucard 亮色输入面板（theme.conf + 图标 SVG）
 ├── fish/
 │   ├── config.fish             # 行为配置
 │   ├── fish_plugins            # fisher 插件清单
@@ -54,6 +59,8 @@ dotfiles/
 | fish      | `~/.config/fish/conf.d/uv.env.fish`             | `dotfiles/fish/conf.d/uv.env.fish`              | symlink  | 本次收编（未留基线）      |
 | fish      | `~/.config/fish/functions/proxy.fish`           | `dotfiles/fish/functions/proxy.fish`            | symlink  | 本次收编（未留基线）      |
 | fish      | `~/.config/fish/functions/qr.fish`              | `dotfiles/fish/functions/qr.fish`               | symlink  | 本次收编（未留基线）      |
+| fcitx5    | `~/.local/share/fcitx5/themes/dracula-classic`  | `dotfiles/fcitx5/themes/dracula-classic`        | symlink  | —（新建）                 |
+| fcitx5    | `~/.local/share/fcitx5/themes/alucard-classic`  | `dotfiles/fcitx5/themes/alucard-classic`        | symlink  | —（新建）                 |
 | rofi      | `~/.config/rofi/config.rasi`                    | `dotfiles/rofi/config.rasi`                     | symlink  | `d6723b6`                 |
 | rofi      | `~/.config/rofi/alucard.rasi`                   | `dotfiles/rofi/alucard.rasi`                    | symlink  | —（新建）                 |
 | swaync    | `~/.config/swaync/config.json`                  | `dotfiles/swaync/config.json`                   | symlink  | `e8c4af7`                 |
@@ -87,6 +94,10 @@ ln -sfn "$PWD/dotfiles/fish/conf.d/uv.env.fish"        ~/.config/fish/conf.d/uv.
 ln -sfn "$PWD/dotfiles/fish/functions/proxy.fish"      ~/.config/fish/functions/proxy.fish
 ln -sfn "$PWD/dotfiles/fish/functions/qr.fish"         ~/.config/fish/functions/qr.fish
 
+mkdir -p ~/.local/share/fcitx5/themes
+ln -sfn "$PWD/dotfiles/fcitx5/themes/dracula-classic" ~/.local/share/fcitx5/themes/dracula-classic
+ln -sfn "$PWD/dotfiles/fcitx5/themes/alucard-classic" ~/.local/share/fcitx5/themes/alucard-classic
+
 mkdir -p ~/.config/rofi ~/.config/swaync
 ln -sfn "$PWD/dotfiles/rofi/config.rasi"    ~/.config/rofi/config.rasi
 ln -sfn "$PWD/dotfiles/rofi/alucard.rasi"   ~/.config/rofi/alucard.rasi
@@ -101,6 +112,7 @@ swaync-client -R    # 重载 config.json
 swaync-client -rs   # 重载 style.css
 # rofi / alacritty 无守护进程：下次启动（新窗口）即生效
 source ~/.config/fish/conf.d/alucard_theme.fish   # 当前 fish 立即套用；新 shell 自动加载 conf.d
+fcitx5 -r -d                                       # 重启 fcitx5 使主题生效
 ```
 
 ## 恢复
@@ -113,18 +125,18 @@ git show e8c4af7:dotfiles/swaync/backup/config.json.orig > ~/.config/swaync/conf
 git show e8c4af7:dotfiles/swaync/backup/style.css.orig   > ~/.config/swaync/style.css
 ```
 
-alacritty / fish 收编时未保留基线（直接对齐 spec），恢复任意历史版本走 git：
+alacritty / fish / fcitx5 收编时未保留基线（直接对齐 spec），恢复任意历史版本走 git：
 
 ```bash
-git log --oneline -- dotfiles/alacritty dotfiles/fish
+git log --oneline -- dotfiles/alacritty dotfiles/fish dotfiles/fcitx5
 git checkout <commit> -- dotfiles/alacritty/alucard.toml
 ```
 
 ## 备份策略
 
 - rofi / swaync 在**收编时**保存过一份收编前基线（`dotfiles/<app>/backup/<原名>.orig`），随仓库提交；app 稳定后基线**已删除**，内容仍完整保留在收编 commit 中（见上表与恢复命令）。
-- alacritty / fish 未保留收编前基线；之后改动只走正常 commit，**不再新增备份文件**——git 历史本身就是备份。
+- alacritty / fish / fcitx5 未保留收编前基线；之后改动只走正常 commit，**不再新增备份文件**——git 历史本身就是备份。
 - 颜色同步来源：`dracula-spec.mdx`（`theme/_palette.scss` 是 bar 用的暗色 token）。
-  - Dracula 暗色改动：`rofi/alucard.rasi`、`swaync/style.css`（以及 bar 的 `theme/`）。
-  - Alucard 亮色改动：`alacritty/alucard.toml`、`fish/conf.d/alucard_theme.fish`。
+  - Dracula 暗色改动：`rofi/alucard.rasi`、`swaync/style.css`、`fcitx5/themes/dracula-classic`（以及 bar 的 `theme/`）。
+  - Alucard 亮色改动：`alacritty/alucard.toml`、`fish/conf.d/alucard_theme.fish`、`fcitx5/themes/alucard-classic`。
 - pywal 生成的 `~/.cache/wal/colors-rofi-*.rasi` 不在托管范围，rofi 已不再 `@theme` 它（配色不再跟随壁纸）。
