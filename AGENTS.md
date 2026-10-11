@@ -2,3 +2,4 @@
 
 - 修改任何 `~/.config` 下的文件应该获取用户的许可
 - 做完任务后询问用户是否提交，不要擅自提交
+- dracula 和 alucard 的设计准则在 `dracula-spec.mdx`
