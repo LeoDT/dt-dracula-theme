@@ -44,10 +44,17 @@ function readSessions(): PiSession[] {
       Gio.FileQueryInfoFlags.NONE,
       null,
     );
-    names = [];
-    let info: Gio.FileInfo | null;
-    while ((info = enumerator.next_file(null))) {
-      if (info.get_file_type() === Gio.FileType.REGULAR) names.push(info.get_name());
+    // The enumerator holds an open directory fd; it must be closed explicitly.
+    // Relying on GC finalization leaks one fd per poll and eventually hits
+    // EMFILE ("Too many open files" in AstalIO.read_file).
+    try {
+      names = [];
+      let info: Gio.FileInfo | null;
+      while ((info = enumerator.next_file(null))) {
+        if (info.get_file_type() === Gio.FileType.REGULAR) names.push(info.get_name());
+      }
+    } finally {
+      enumerator.close(null);
     }
   } catch {
     return sessions;
