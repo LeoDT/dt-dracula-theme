@@ -152,6 +152,12 @@ popover > contents {
   padding: 8px;
 }
 
+/* Adwaita paints the arrow from its own (light) palette; match the panel. */
+popover > arrow {
+  background: $surface;
+  border: 1px solid $divider;
+}
+
 .panel-title {
   color: $text-dim;
   font-size: 15px;
