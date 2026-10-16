@@ -1,0 +1,688 @@
+/*
+ * Alucard Shell — GTK4 theme (hybrid).
+ *
+ * Chrome — window, menus, toolbars, sidebars and controls — uses Dracula
+ * Classic (dark). Content surfaces — views, icon views and text views — use
+ * Alucard Classic (light). Controls stay dark even when they sit inside a
+ * light content surface.
+ *
+ * Palette values are taken verbatim from dracula-spec.mdx; keep them in sync
+ * with theme/_palette.scss, the GTK3 file and the other dotfiles themes.
+ *
+ * The built-in GTK4 Default dark stylesheet is the base, so widgets we do not
+ * override still look coherent. Like Adwaita, it bakes most colors in as
+ * literals (named @define-color overrides alone are not enough), so the
+ * surfaces we care about are overridden explicitly below.
+ *
+ * Note: libadwaita applications ignore the theme name entirely; this file has
+ * no effect on them.
+ */
+
+@import url("resource:///org/gtk/libgtk/theme/Default/Default-dark.css");
+
+/* ------------------------------------------------------------------ *
+ * Tokens
+ * ------------------------------------------------------------------ */
+
+/* Dracula Classic — chrome */
+@define-color dracula_bg        #282A36; /* Background */
+@define-color dracula_sunken    #21222C; /* Background Dark */
+@define-color dracula_raised    #343746; /* Floating interactive elements */
+@define-color dracula_hover     #44475A; /* Selection */
+@define-color dracula_fg        #F8F8F2; /* Foreground */
+@define-color dracula_fg_dim    rgba(248, 248, 242, 0.5);
+@define-color dracula_comment   #6272A4; /* Comment / Current Line */
+@define-color dracula_border    #44475A; /* Selection, used as subtle border */
+@define-color dracula_accent    #BD93F9; /* Purple */
+@define-color dracula_accent_hi #D6ACFF; /* AnsiBrightBlue */
+@define-color dracula_on_accent #282A36; /* Background */
+@define-color dracula_red       #FF5555;
+@define-color dracula_orange    #FFB86C;
+@define-color dracula_green     #50FA7B;
+@define-color dracula_cyan      #8BE9FD;
+
+/* Alucard Classic — content */
+@define-color alucard_bg        #FFFBEB; /* Background */
+@define-color alucard_fg        #1F1F1F; /* Foreground */
+@define-color alucard_sel       #CFCFDE; /* Selection */
+@define-color alucard_comment   #6C664B; /* Comment */
+@define-color alucard_accent    #644AC9; /* Purple */
+
+/* Map the built-in Default theme's named colors onto Dracula chrome. Only a
+ * few rules still use them, but the ones that do (selections, content_view_bg,
+ * text_view_bg, borders, ...) matter. Views are content surfaces, so the
+ * selection tokens stay Alucard; chrome selections are set explicitly below. */
+@define-color theme_fg_color @dracula_fg;
+@define-color theme_text_color @dracula_fg;
+@define-color theme_bg_color @dracula_bg;
+@define-color theme_base_color @dracula_sunken;
+@define-color theme_selected_bg_color @alucard_sel;
+@define-color theme_selected_fg_color @alucard_fg;
+@define-color insensitive_bg_color @dracula_bg;
+@define-color insensitive_fg_color @dracula_fg_dim;
+@define-color insensitive_base_color @dracula_sunken;
+@define-color theme_unfocused_fg_color @dracula_fg_dim;
+@define-color theme_unfocused_text_color @dracula_fg_dim;
+@define-color theme_unfocused_bg_color @dracula_bg;
+@define-color theme_unfocused_base_color @dracula_sunken;
+@define-color theme_unfocused_selected_bg_color @alucard_sel;
+@define-color theme_unfocused_selected_fg_color @alucard_fg;
+@define-color unfocused_insensitive_color @dracula_fg_dim;
+@define-color borders @dracula_border;
+@define-color unfocused_borders @dracula_border;
+@define-color warning_color @dracula_orange;
+@define-color error_color @dracula_red;
+@define-color success_color @dracula_green;
+@define-color content_view_bg @alucard_bg;
+@define-color text_view_bg @alucard_bg;
+
+/* ------------------------------------------------------------------ *
+ * Chrome surfaces
+ * ------------------------------------------------------------------ */
+
+window,
+.background {
+  background-color: @dracula_bg;
+  color: @dracula_fg;
+}
+
+.background:backdrop {
+  background-color: @dracula_bg;
+  color: @dracula_fg_dim;
+}
+
+headerbar,
+.titlebar:not(headerbar) {
+  background: @dracula_bg;
+  color: @dracula_fg;
+  border-color: @dracula_sunken;
+  box-shadow: none;
+}
+
+headerbar:backdrop,
+.titlebar:backdrop:not(headerbar) {
+  background: @dracula_bg;
+  color: @dracula_fg_dim;
+  border-color: @dracula_sunken;
+}
+
+menubar {
+  background-color: @dracula_bg;
+  color: @dracula_fg;
+  box-shadow: inset 0 -1px @dracula_sunken;
+}
+
+menubar > item:selected {
+  background-color: transparent;
+  color: @dracula_fg;
+  box-shadow: inset 0 -3px @dracula_accent;
+}
+
+menubar > item:disabled {
+  color: @dracula_fg_dim;
+  box-shadow: none;
+}
+
+.toolbar,
+toolbar,
+.location-bar,
+.inline-toolbar,
+searchbar > revealer > box {
+  background-color: @dracula_bg;
+  color: @dracula_fg;
+}
+
+.toolbar:backdrop,
+toolbar:backdrop,
+.location-bar:backdrop,
+.inline-toolbar:backdrop,
+searchbar > revealer > box:backdrop {
+  background-color: @dracula_bg;
+  border-color: @dracula_sunken;
+}
+
+/* Sidebar (file chooser places sidebar, stack switchers, ...) */
+.sidebar {
+  background-color: @dracula_sunken;
+  color: @dracula_fg;
+  border-color: @dracula_border;
+}
+
+.sidebar:backdrop {
+  background-color: @dracula_sunken;
+  border-color: @dracula_sunken;
+}
+
+.navigation-sidebar,
+stacksidebar,
+placessidebar {
+  background-color: transparent;
+  color: @dracula_fg;
+}
+
+/* ------------------------------------------------------------------ *
+ * Content surfaces (light)
+ * ------------------------------------------------------------------ */
+
+.view,
+view,
+iconview,
+textview,
+textview > text {
+  background-color: @alucard_bg;
+  color: @alucard_fg;
+  caret-color: @alucard_fg;
+}
+
+.view:backdrop,
+iconview:backdrop,
+textview:backdrop,
+textview > text:backdrop {
+  background-color: @alucard_bg;
+  color: @alucard_fg;
+}
+
+.view:disabled,
+iconview:disabled,
+textview:disabled,
+textview > text:disabled {
+  background-color: @alucard_bg;
+  color: @alucard_comment;
+}
+
+/* Selection inside content surfaces */
+.view:selected,
+.view:selected:focus,
+view:selected,
+view:selected:focus,
+iconview:selected,
+iconview:selected:focus,
+textview > text:selected,
+textview > text:selected:focus,
+textview > text > selection,
+textview > text > selection:focus-within,
+columnview.view:selected,
+columnview.view:selected:focus,
+treeview.view:selected,
+treeview.view:selected:focus,
+gridview > child:selected,
+flowbox > flowboxchild:selected {
+  background-color: @alucard_sel;
+  color: @alucard_fg;
+}
+
+.view:disabled:selected,
+iconview:disabled:selected,
+gridview > child:disabled:selected,
+flowbox > flowboxchild:disabled:selected,
+columnview.view:disabled:selected,
+treeview.view:disabled:selected {
+  background-color: @alucard_sel;
+  color: @alucard_comment;
+}
+
+/* ------------------------------------------------------------------ *
+ * Sidebar (dark) — file choosers put content-shaped list views inside
+ * their sidebar, which must stay chrome-dark.
+ * ------------------------------------------------------------------ */
+
+.sidebar .view,
+.sidebar view,
+.sidebar iconview,
+.sidebar textview,
+.sidebar textview > text,
+placessidebar .view,
+placessidebar view,
+placessidebar iconview,
+placessidebar textview,
+placessidebar textview > text,
+stacksidebar .view,
+stacksidebar view,
+stacksidebar iconview {
+  background-color: @dracula_sunken;
+  color: @dracula_fg;
+}
+
+.sidebar .view:selected,
+.sidebar view:selected,
+.sidebar iconview:selected,
+.sidebar textview > text:selected,
+placessidebar .view:selected,
+placessidebar view:selected,
+placessidebar iconview:selected,
+stacksidebar .view:selected,
+stacksidebar view:selected,
+stacksidebar iconview:selected {
+  background-color: @dracula_hover;
+  color: @dracula_fg;
+}
+
+/* ------------------------------------------------------------------ *
+ * Rows (lists, list boxes): chrome selection
+ * ------------------------------------------------------------------ */
+
+row {
+  color: @dracula_fg;
+}
+
+row:selected,
+row:selected:focus,
+row.activatable:selected:hover,
+row.activatable:selected.has-open-popup,
+listview:not(:focus-within) > row:selected,
+.navigation-sidebar > row:selected,
+stacksidebar row:selected {
+  background-color: @dracula_hover;
+  color: @dracula_fg;
+}
+
+.navigation-sidebar > row:selected:hover,
+stacksidebar row:selected:hover {
+  background-color: @dracula_hover;
+}
+
+row:disabled,
+.navigation-sidebar > row:disabled {
+  color: @dracula_fg_dim;
+}
+
+/* ------------------------------------------------------------------ *
+ * Controls (unified dark, even inside light content)
+ * ------------------------------------------------------------------ */
+
+button {
+  background-color: @dracula_raised;
+  background-image: none;
+  color: @dracula_fg;
+  border-color: @dracula_border;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+  box-shadow: none;
+}
+
+button:hover {
+  background-color: @dracula_hover;
+  background-image: none;
+  border-color: @dracula_hover;
+  color: @dracula_fg;
+}
+
+button.keyboard-activating,
+button:active,
+button:checked {
+  background-color: @dracula_sunken;
+  background-image: none;
+  border-color: @dracula_border;
+  color: @dracula_fg;
+  box-shadow: none;
+}
+
+button:disabled {
+  background-color: @dracula_bg;
+  background-image: none;
+  border-color: @dracula_sunken;
+  color: @dracula_fg_dim;
+}
+
+button:backdrop,
+button:backdrop:disabled {
+  background-color: @dracula_bg;
+  background-image: none;
+  border-color: @dracula_sunken;
+  color: @dracula_fg_dim;
+}
+
+button.flat,
+button.sidebar-button,
+windowcontrols button,
+headerbar button.toggle {
+  background-color: transparent;
+  background-image: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+button.flat:hover,
+button.sidebar-button:hover,
+windowcontrols button:hover,
+headerbar button.toggle:hover {
+  background-color: @dracula_hover;
+}
+
+button.suggested-action {
+  background-color: @dracula_accent;
+  background-image: none;
+  border-color: @dracula_accent;
+  color: @dracula_on_accent;
+}
+
+button.suggested-action:hover {
+  background-color: @dracula_accent_hi;
+  border-color: @dracula_accent_hi;
+}
+
+button.suggested-action:active,
+button.suggested-action:checked {
+  background-color: @dracula_accent;
+  border-color: @dracula_accent;
+}
+
+button.destructive-action {
+  background-color: @dracula_red;
+  background-image: none;
+  border-color: @dracula_red;
+  color: @dracula_on_accent;
+}
+
+button.destructive-action:hover {
+  background-color: @dracula_red;
+  border-color: @dracula_red;
+}
+
+entry,
+spinbutton:not(.vertical),
+spinbutton.vertical > text {
+  background-color: @dracula_sunken;
+  color: @dracula_fg;
+  border-color: @dracula_border;
+  box-shadow: none;
+}
+
+entry:focus-within,
+spinbutton:focus-within:not(.vertical) {
+  border-color: @dracula_accent;
+  box-shadow: inset 0 0 0 1px @dracula_accent;
+}
+
+entry:disabled,
+spinbutton:disabled:not(.vertical) {
+  background-color: @dracula_sunken;
+  color: @dracula_fg_dim;
+  border-color: @dracula_sunken;
+  box-shadow: none;
+}
+
+entry:backdrop,
+spinbutton:backdrop:not(.vertical),
+entry:backdrop:disabled,
+spinbutton:backdrop:disabled:not(.vertical) {
+  background-color: @dracula_sunken;
+  color: @dracula_fg_dim;
+  border-color: @dracula_sunken;
+  box-shadow: none;
+}
+
+entry > image,
+spinbutton > image,
+entry > text > image,
+spinbutton > text > image {
+  color: @dracula_comment;
+}
+
+entry > image:hover,
+entry > image:active,
+spinbutton > image:hover,
+spinbutton > image:active {
+  color: @dracula_fg;
+}
+
+entry > text > selection,
+entry > text > selection:focus-within,
+spinbutton > text > selection,
+spinbutton > text > selection:focus-within,
+spinbutton.vertical > text > selection,
+spinbutton.vertical > text > selection:focus-within {
+  background-color: @dracula_hover;
+  color: @dracula_fg;
+}
+
+scrollbar {
+  background-color: @dracula_sunken;
+  border-color: @dracula_border;
+}
+
+scrollbar:backdrop {
+  background-color: @dracula_sunken;
+  border-color: @dracula_sunken;
+}
+
+scrollbar > range > trough > slider {
+  background-color: @dracula_comment;
+  border-color: transparent;
+}
+
+scrollbar > range > trough > slider:hover {
+  background-color: @dracula_accent;
+}
+
+scrollbar > range > trough > slider:hover:active {
+  background-color: @dracula_accent_hi;
+}
+
+scrollbar > range > trough > slider:disabled {
+  background-color: transparent;
+}
+
+scrollbar.overlay-indicator:not(.dragging):not(.hovering) > range > trough > slider {
+  background-color: @dracula_fg;
+  border-color: @dracula_bg;
+}
+
+/* ------------------------------------------------------------------ *
+ * Menus, popovers, tooltips (floating, one step up)
+ * ------------------------------------------------------------------ */
+
+popover.background > arrow,
+popover.background > contents,
+popover.menu > arrow,
+popover.menu.background > contents {
+  background-color: @dracula_raised;
+  color: @dracula_fg;
+  border-color: @dracula_border;
+}
+
+popover.background > contents separator {
+  background-color: @dracula_border;
+}
+
+popover.menu modelbutton:selected {
+  background-color: @dracula_hover;
+  color: @dracula_fg;
+}
+
+popover.menu modelbutton:selected:active {
+  background-color: @dracula_sunken;
+}
+
+popover.menu accelerator {
+  color: @dracula_comment;
+}
+
+popover.menu check,
+popover.menu radio {
+  color: @dracula_accent;
+}
+
+tooltip,
+tooltip.background {
+  background-color: @dracula_raised;
+  color: @dracula_fg;
+  border: 1px solid @dracula_border;
+}
+
+/* ------------------------------------------------------------------ *
+ * Notebooks, headers, frames, separators
+ * ------------------------------------------------------------------ */
+
+notebook > header {
+  background-color: @dracula_sunken;
+  border-color: @dracula_border;
+}
+
+notebook > header:backdrop {
+  background-color: @dracula_sunken;
+  border-color: @dracula_sunken;
+}
+
+notebook > header.top > tabs > tab:hover {
+  background-color: transparent;
+  box-shadow: inset 0 -4px @dracula_border;
+}
+
+notebook > header.top > tabs > tab:checked {
+  color: @dracula_fg;
+  box-shadow: inset 0 -4px @dracula_accent;
+}
+
+notebook > header.bottom > tabs > tab:checked {
+  box-shadow: inset 0 4px @dracula_accent;
+}
+
+notebook > header.left > tabs > tab:checked {
+  box-shadow: inset -4px 0 @dracula_accent;
+}
+
+notebook > header.right > tabs > tab:checked {
+  box-shadow: inset 4px 0 @dracula_accent;
+}
+
+notebook > stack:not(:only-child) {
+  background-color: @dracula_bg;
+}
+
+treeview.view > header > button,
+columnview.view > header > button {
+  background-color: @dracula_sunken;
+  background-image: none;
+  color: @dracula_comment;
+  border-color: @dracula_border;
+}
+
+treeview.view > header > button:hover,
+columnview.view > header > button:hover {
+  color: @dracula_fg;
+}
+
+treeview.view > header > button:active,
+columnview.view > header > button:active {
+  color: @dracula_fg;
+}
+
+frame > border,
+.frame {
+  border-color: @dracula_border;
+}
+
+separator {
+  background-color: @dracula_border;
+}
+
+rubberband,
+.rubberband,
+.content-view > rubberband,
+columnview.view > rubberband,
+treeview.view > rubberband,
+gridview > rubberband,
+flowbox > rubberband {
+  border-color: @dracula_accent;
+  background-color: alpha(@dracula_accent, 0.2);
+}
+
+/* ------------------------------------------------------------------ *
+ * Accents & selection in chrome
+ * ------------------------------------------------------------------ */
+
+label > selection,
+label:selected {
+  color: @dracula_accent;
+}
+
+switch {
+  background-color: @dracula_sunken;
+  border-color: @dracula_border;
+  color: @dracula_fg;
+}
+
+switch:checked {
+  background-color: @dracula_accent;
+  border-color: @dracula_accent;
+  color: @dracula_on_accent;
+}
+
+switch > slider {
+  background-color: @dracula_fg;
+  background-image: none;
+  border-color: @dracula_border;
+  box-shadow: none;
+}
+
+switch:hover > slider {
+  background-color: @dracula_fg;
+  background-image: none;
+}
+
+switch:checked > slider {
+  background-color: @dracula_fg;
+  border-color: @dracula_accent;
+}
+
+switch:disabled {
+  background-color: @dracula_bg;
+  border-color: @dracula_sunken;
+  color: @dracula_fg_dim;
+}
+
+switch:disabled > slider {
+  background-color: @dracula_fg_dim;
+  border-color: @dracula_sunken;
+}
+
+progressbar > trough,
+scale > trough > fill,
+scale > trough {
+  background-color: @dracula_sunken;
+  border-color: @dracula_border;
+}
+
+progressbar > trough > progress,
+scale > trough > highlight {
+  background-color: @dracula_accent;
+  background-image: none;
+}
+
+levelbar block.filled {
+  background-color: @dracula_accent;
+}
+
+check:checked,
+radio:checked {
+  background-color: @dracula_accent;
+  background-image: none;
+  border-color: @dracula_accent;
+  color: @dracula_on_accent;
+}
+
+*:link,
+button:link,
+button:visited {
+  color: @dracula_cyan;
+}
+
+/* Focus rings: Alucard on content, Dracula elsewhere */
+button,
+entry,
+spinbutton,
+row,
+notebook > header > tabs > tab,
+modelbutton {
+  outline-color: alpha(@dracula_accent, 0.5);
+}
+
+.view,
+view,
+treeview,
+iconview,
+columnview,
+textview {
+  outline-color: alpha(@alucard_accent, 0.6);
+}

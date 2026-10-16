@@ -1,0 +1,3 @@
+/* Apps that explicitly prefer a dark theme load gtk-dark.css; point it at the
+ * main Alucard stylesheet, which is dark-chrome based already. */
+@import url("gtk.css");

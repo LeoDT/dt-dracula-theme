@@ -11,10 +11,11 @@
 - **Dracula Classic（暗色）——界面**：AGS 顶栏、rofi、swaync、hyprlock。
 - **Alucard Classic（亮色）——长读内容**：alacritty、fish，以及外部仓库 `~/github/emacs.d` 的 Emacs 主题（`lisp/alucard-theme.el`）。
 - **fcitx5 输入面板**：同时提供两套（`dracula-classic` / `alucard-classic`），按需在 `fcitx5-configtool` 里切换。
+- **复杂 GUI（混用）**：GTK 主题 `Alucard`（`dotfiles/gtk/Alucard`）——窗口 / 菜单 / 工具栏 / 侧栏 / 控件用 Dracula Classic 暗色，`.view` / `iconview` / `textview` 等内容面用 Alucard Classic 亮色；控件即使落在亮色内容里也保持暗色。
 
 窗口边框 / glow 用 Alucard 的 accent（`#644AC9`）与亮色窗口呼应，定义在 `~/.config/hypr/hyprland.lua`（不在本仓库托管范围）。
 
-两套都取自 [`dracula-spec.mdx`](../dracula-spec.mdx)。改色时各按自己的变体更新，不要混用。
+两套都取自 [`dracula-spec.mdx`](../dracula-spec.mdx)。改色时各按自己的变体更新，不要混用（GTK 主题是唯一有意混用的例外，见上）。
 
 ## 目录
 
@@ -38,6 +39,15 @@ dotfiles/
 │   └── functions/
 │       ├── proxy.fish
 │       └── qr.fish
+├── gtk/
+│   └── Alucard/
+│       ├── index.theme         # 主题元数据（名称 Alucard）
+│       ├── gtk-3.0/
+│       │   ├── gtk.css         # Dracula 暗色 chrome + Alucard 亮色内容
+│       │   └── gtk-dark.css    # → gtk.css
+│       └── gtk-4.0/
+│           ├── gtk.css         # 同上，基于 GTK4 内置 Default 暗色主题
+│           └── gtk-dark.css    # → gtk.css
 ├── rofi/
 │   ├── config.rasi             # 行为配置
 │   └── alucard.rasi            # Dracula Classic 主题（对齐 bar 的语义 token）
@@ -61,6 +71,9 @@ dotfiles/
 | fish      | `~/.config/fish/functions/qr.fish`              | `dotfiles/fish/functions/qr.fish`               | symlink  | 本次收编（未留基线）      |
 | fcitx5    | `~/.local/share/fcitx5/themes/dracula-classic`  | `dotfiles/fcitx5/themes/dracula-classic`        | symlink  | —（新建）                 |
 | fcitx5    | `~/.local/share/fcitx5/themes/alucard-classic`  | `dotfiles/fcitx5/themes/alucard-classic`        | symlink  | —（新建）                 |
+| gtk       | `~/.local/share/themes/Alucard`                 | `dotfiles/gtk/Alucard`                          | symlink  | —（新建）                 |
+| gtk       | `~/.config/gtk-3.0/gtk.css`                     | `dotfiles/gtk/Alucard/gtk-3.0/gtk.css`          | symlink  | —（新建）                 |
+| gtk       | `~/.config/gtk-4.0/gtk.css`                     | `dotfiles/gtk/Alucard/gtk-4.0/gtk.css`          | symlink  | —（新建）                 |
 | rofi      | `~/.config/rofi/config.rasi`                    | `dotfiles/rofi/config.rasi`                     | symlink  | `d6723b6`                 |
 | rofi      | `~/.config/rofi/alucard.rasi`                   | `dotfiles/rofi/alucard.rasi`                    | symlink  | —（新建）                 |
 | swaync    | `~/.config/swaync/config.json`                  | `dotfiles/swaync/config.json`                   | symlink  | `e8c4af7`                 |
@@ -98,6 +111,11 @@ mkdir -p ~/.local/share/fcitx5/themes
 ln -sfn "$PWD/dotfiles/fcitx5/themes/dracula-classic" ~/.local/share/fcitx5/themes/dracula-classic
 ln -sfn "$PWD/dotfiles/fcitx5/themes/alucard-classic" ~/.local/share/fcitx5/themes/alucard-classic
 
+mkdir -p ~/.local/share/themes ~/.config/gtk-3.0 ~/.config/gtk-4.0
+ln -sfn "$PWD/dotfiles/gtk/Alucard"                   ~/.local/share/themes/Alucard
+ln -sfn "$PWD/dotfiles/gtk/Alucard/gtk-3.0/gtk.css"  ~/.config/gtk-3.0/gtk.css
+ln -sfn "$PWD/dotfiles/gtk/Alucard/gtk-4.0/gtk.css"  ~/.config/gtk-4.0/gtk.css
+
 mkdir -p ~/.config/rofi ~/.config/swaync
 ln -sfn "$PWD/dotfiles/rofi/config.rasi"    ~/.config/rofi/config.rasi
 ln -sfn "$PWD/dotfiles/rofi/alucard.rasi"   ~/.config/rofi/alucard.rasi
@@ -113,6 +131,11 @@ swaync-client -rs   # 重载 style.css
 # rofi / alacritty 无守护进程：下次启动（新窗口）即生效
 source ~/.config/fish/conf.d/alucard_theme.fish   # 当前 fish 立即套用；新 shell 自动加载 conf.d
 fcitx5 -r -d                                       # 重启 fcitx5 使主题生效
+
+# GTK 无守护进程：重启应用即生效。
+# 全局（用户级）激活靠上面的 user CSS 软链（~/.config/gtk-{3,4}.0/gtk.css）。
+# 单次启动也可用 GTK_THEME=Alucard <app>（GTK3 / GTK4 均支持，优先级低于 app 自己的 CSS）。
+# 注意 GTK 4.24 起 gsettings 的 gtk-theme 与 gtk-4.0/settings.ini 不再被读取，别再用它们切主题。
 ```
 
 ## 恢复
@@ -135,8 +158,9 @@ git checkout <commit> -- dotfiles/alacritty/alucard.toml
 ## 备份策略
 
 - rofi / swaync 在**收编时**保存过一份收编前基线（`dotfiles/<app>/backup/<原名>.orig`），随仓库提交；app 稳定后基线**已删除**，内容仍完整保留在收编 commit 中（见上表与恢复命令）。
-- alacritty / fish / fcitx5 未保留收编前基线；之后改动只走正常 commit，**不再新增备份文件**——git 历史本身就是备份。
+- alacritty / fish / fcitx5 / gtk 未保留收编前基线；之后改动只走正常 commit，**不再新增备份文件**——git 历史本身就是备份。
 - 颜色同步来源：`dracula-spec.mdx`（`theme/_palette.scss` 是 bar 用的暗色 token）。
   - Dracula 暗色改动：`rofi/alucard.rasi`、`swaync/style.css`、`fcitx5/themes/dracula-classic`（以及 bar 的 `theme/`）。
   - Alucard 亮色改动：`alacritty/alucard.toml`、`fish/conf.d/alucard_theme.fish`、`fcitx5/themes/alucard-classic`。
+  - GTK（`gtk/Alucard`）：同一文件内混用两套——chrome 跟 Dracula，内容面跟 Alucard。
 - pywal 生成的 `~/.cache/wal/colors-rofi-*.rasi` 不在托管范围，rofi 已不再 `@theme` 它（配色不再跟随壁纸）。
