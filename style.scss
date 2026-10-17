@@ -143,6 +143,42 @@ menubutton.status-button > button:hover {
   background: $surface-hover;
 }
 
+/* ---- right island: deepseek balance ---- */
+.ds-balance-row {
+  padding: 2px 2px;
+}
+
+.ds-currency {
+  color: $text-dim;
+  font-size: 14px;
+}
+
+.ds-total {
+  color: $text;
+  font-weight: $font-weight-bold;
+}
+
+.ds-status {
+  font-size: 14px;
+}
+
+.ds-status.ok {
+  color: $ok;
+}
+
+.ds-status.err {
+  color: $err;
+}
+
+.ds-message {
+  color: $text-dim;
+  font-size: 14px;
+}
+
+.ds-message.err {
+  color: $err;
+}
+
 /* ---- popups (volume panel + calendar) ---- */
 popover > contents {
   background: $surface;
